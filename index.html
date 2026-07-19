@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>مولّد الفروض — العلوم الفيزيائية</title>
+<meta name="description" content="مولّد فروض واختبارات جاهزة للطباعة لمادة العلوم الفيزيائية والتكنولوجيا - أولى متوسط">
+<meta name="theme-color" content="#0F1424">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="مولّد الفروض">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=IBM+Plex+Mono:wght@500&family=Amiri:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0F1424; --bg-deep:#0A0E1B; --surface:#1A2140; --surface-2:#212A50; --line:#2E3766;
+    --chalk:#F1EDE4; --chalk-dim:#B9BBD1; --copper:#E8A33D; --copper-glow:#FFD27A; --cyan:#49D3C7;
+    --danger:#E1595A; --safe:#5BC97F; --radius:16px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:radial-gradient(ellipse at 15% -10%, #1B2450 0%, transparent 55%), radial-gradient(ellipse at 100% 10%, #241A40 0%, transparent 45%), var(--bg);
+    color:var(--chalk); font-family:'Cairo',sans-serif; min-height:100vh; line-height:1.6;
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:0 18px 80px;}
+  .hero{padding:32px 0 20px;border-bottom:1px solid var(--line);margin-bottom:22px;}
+  .hero h1{font-size:clamp(24px,4.5vw,36px);font-weight:900;margin:0 0 8px;}
+  .hero p{color:var(--chalk-dim);font-size:14.5px;max-width:600px;margin:0;}
+
+  .card{background:linear-gradient(180deg,var(--surface),var(--surface-2));border:1px solid var(--line);border-radius:var(--radius);padding:24px;margin-bottom:20px;}
+  .card h2{font-size:18px;font-weight:800;margin:0 0 16px;}
+
+  label{display:block;font-size:13px;color:var(--chalk-dim);margin-bottom:5px;font-weight:600;}
+  input[type=text],input[type=number],input[type=date]{
+    width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg-deep);color:var(--chalk);font-family:Cairo;font-size:14px;
+  }
+  .field{margin-bottom:14px;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media(max-width:560px){.grid2{grid-template-columns:1fr;}}
+
+  .check-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:6px;}
+  .check-chip{display:flex;align-items:center;gap:7px;background:var(--surface-2);border:1.5px solid var(--line);border-radius:10px;padding:9px 13px;cursor:pointer;font-size:13.5px;user-select:none;}
+  .check-chip.checked{border-color:var(--cyan);background:rgba(73,211,199,.1);}
+  .check-chip input{accent-color:var(--cyan);}
+
+  button.act{font-family:'Cairo',sans-serif;font-weight:700;font-size:14px;background:var(--copper);color:#1a1204;border:none;padding:12px 22px;border-radius:10px;cursor:pointer;transition:.15s;}
+  button.act:hover{background:var(--copper-glow);}
+  button.act.secondary{background:transparent;color:var(--chalk);border:1px solid var(--line);}
+  button.act.secondary:hover{border-color:var(--cyan);color:var(--cyan);}
+  .controls{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;}
+
+  .hint{font-size:12.5px;color:var(--chalk-dim);margin-top:8px;}
+
+  /* ===== EXAM SHEET (paper look) ===== */
+  #sheet-wrap{display:none;}
+  #sheet-wrap.show{display:block;}
+  .sheet{
+    background:#ffffff;color:#111;border-radius:10px;padding:34px 38px;
+    font-family:'Cairo',sans-serif;box-shadow:0 8px 30px rgba(0,0,0,.35);
+  }
+  .sheet-head{text-align:center;margin-bottom:6px;font-size:13px;line-height:1.9;}
+  .sheet-head .rep{font-weight:700;}
+  .sheet-meta{display:flex;justify-content:space-between;font-size:13px;margin:14px 0;border-top:1.5px solid #111;border-bottom:1.5px solid #111;padding:10px 0;}
+  .sheet-meta div{line-height:1.9;}
+  .sheet-title{text-align:center;font-weight:900;font-size:18px;margin:16px 0 4px;font-family:'Amiri',serif;}
+  .sheet-sub{text-align:center;font-size:12.5px;color:#555;margin-bottom:18px;}
+  .student-line{display:flex;justify-content:space-between;font-size:13px;margin-bottom:20px;}
+  .qitem{margin-bottom:16px;page-break-inside:avoid;}
+  .qhead{font-weight:700;font-size:14.5px;margin-bottom:6px;display:flex;justify-content:space-between;gap:10px;}
+  .qhead .pts{font-family:'IBM Plex Mono',monospace;font-weight:700;color:#a8631a;white-space:nowrap;}
+  .qbody{font-size:13.5px;color:#222;}
+  .opts{list-style:none;margin:6px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:4px;}
+  .opts li{font-size:13px;padding:2px 0;}
+  .opts li:before{content:"○ ";}
+  .tf-line{margin-top:6px;font-size:13px;}
+  .short-line{margin-top:10px;border-bottom:1px dashed #999;height:20px;}
+  .answer{color:#1a7a3d;font-weight:700;font-size:12.5px;margin-top:6px;}
+  .divider{border:none;border-top:1.5px dashed #bbb;margin:22px 0;}
+  .bareme{margin-top:18px;font-size:12.5px;}
+  .bareme table{width:100%;border-collapse:collapse;}
+  .bareme td,.bareme th{border:1px solid #999;padding:5px 8px;text-align:center;font-size:12px;}
+
+  .no-print{}
+  @media print{
+    body{background:#fff !important;}
+    .no-print{display:none !important;}
+    .wrap{max-width:none;padding:0;}
+    .sheet{box-shadow:none;border-radius:0;padding:14px 8px;}
+    .card{display:none;}
+    #sheet-wrap.show{display:block;}
+  }
+
+  footer{text-align:center;color:var(--chalk-dim);font-size:12.5px;padding:30px 0 10px;opacity:.6;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero no-print">
+    <h1>📝 مولّد الفروض والاختبارات</h1>
+    <p>اختر الميادين وعدد الأسئلة، وسيولّد لك التطبيق فرضًا جاهزًا للطباعة مع بارم التنقيط، ونسخة بالإجابات للتصحيح.</p>
+  </div>
+
+  <div class="card no-print">
+    <h2>1) بيانات رأس الفرض</h2>
+    <div class="grid2">
+      <div class="field"><label>المؤسسة</label><input type="text" id="f-school" placeholder="متوسطة ..."></div>
+      <div class="field"><label>الأستاذ(ة)</label><input type="text" id="f-teacher" placeholder="الاسم واللقب"></div>
+      <div class="field"><label>المستوى والقسم</label><input type="text" id="f-level" value="السنة الأولى متوسط"></div>
+      <div class="field"><label>المدة</label><input type="text" id="f-duration" value="ساعة واحدة"></div>
+      <div class="field"><label>عنوان الفرض</label><input type="text" id="f-title" value="الفرض الأول في مادة العلوم الفيزيائية والتكنولوجيا"></div>
+      <div class="field"><label>التاريخ</label><input type="date" id="f-date"></div>
+    </div>
+  </div>
+
+  <div class="card no-print">
+    <h2>2) الميادين والدروس</h2>
+    <div class="check-row" id="domain-filters"></div>
+    <div class="check-row" id="lesson-filters"></div>
+    <div class="hint">فعّل ميدانًا واحدًا أو أكثر؛ ستظهر دروسه بالأسفل لتضييق الاختيار (اختياري).</div>
+  </div>
+
+  <div class="card no-print">
+    <h2>3) عدد الأسئلة وأنواعها</h2>
+    <div class="grid2">
+      <div class="field"><label>عدد الأسئلة</label><input type="number" id="f-count" value="8" min="3" max="20"></div>
+      <div class="field">
+        <label>أنواع الأسئلة</label>
+        <div class="check-row" id="type-filters"></div>
+      </div>
+    </div>
+    <div class="controls">
+      <button class="act" id="btn-generate">🎲 توليد فرض جديد</button>
+      <button class="act secondary" id="btn-toggle-answers">🔑 إظهار نسخة الإجابات</button>
+      <button class="act secondary" id="btn-print">🖨️ طباعة / حفظ PDF</button>
+    </div>
+    <div class="hint" id="gen-hint"></div>
+  </div>
+
+  <div id="sheet-wrap">
+    <div class="sheet" id="sheet"></div>
+  </div>
+
+  <footer>مولّد فروض — العلوم الفيزيائية والتكنولوجيا، أولى متوسط</footer>
+</div>
+
+<script>
+/* ============================================================
+   QUESTION BANK
+   ============================================================ */
+const domainsMeta = {
+  electricity: {label:'⚡ الظواهر الكهربائية', lessons:{
+    comp:'المكوّنات والرموز', circuit:'الدارة البسيطة', series:'التسلسل', parallel:'التوازي',
+    vv:'ذهاب-إياب', short:'الدارة المستقصرة', safety:'الأمان الكهربائي'
+  }},
+  matter: {label:'🧪 المادة وتحولاتها', lessons:{
+    volume:'قياس الحجم', states:'حالات المادة', transform:'تغيرات الحالة', mixture:'الخلائط', solution:'المحلول المائي'
+  }},
+  light: {label:'🔭 الظواهر الضوئية والفلكية', lessons:{
+    sources:'المنابع والرؤية', propagation:'الانتشار والحزم', shadow:'الظل والظليل', eclipse:'كسوف وخسوف', astronomy:'الفلك'
+  }},
+};
+
+const bank = {
+  electricity: [
+    {lesson:'comp', type:'mcq', q:'عنصر يحوّل الطاقة الكهربائية إلى طاقة ضوئية هو:', options:['مولد','مصباح','قاطعة','سلك توصيل'], correct:1},
+    {lesson:'comp', type:'tf', q:'الرمز ⊗ في المخطط الكهربائي يمثّل قاطعة كهربائية.', correct:false, note:'يمثّل مصباحًا كهربائيًا'},
+    {lesson:'comp', type:'mcq', q:'من بين هذه المواد، الناقلة للكهرباء هي:', options:['البلاستيك','النحاس','المطاط','الخشب'], correct:1},
+    {lesson:'comp', type:'short', q:'ماذا نسمّي المواد التي لا تسمح بمرور التيار الكهربائي؟', answer:'المواد العازلة'},
+    {lesson:'circuit', type:'mcq', q:'لإضاءة مصباح في دارة كهربائية بسيطة يجب أن تكون الدارة:', options:['مفتوحة','مغلقة','مستقصرة','بدون مولد'], correct:1},
+    {lesson:'circuit', type:'short', q:'اذكر عنصرين ضروريين لتركيب دارة كهربائية بسيطة.', answer:'مولد كهربائي ومصباح (وأسلاك توصيل)'},
+    {lesson:'circuit', type:'tf', q:'يمكن أن تضيء دارة كهربائية بدون مولد.', correct:false},
+    {lesson:'series', type:'mcq', q:'في الدارة التسلسلية، عند احتراق مصباح واحد من ثلاثة مصابيح:', options:['يبقى مصباحان مضيئين','تنطفئ كل المصابيح','يزداد توهج الباقي','لا يتغيّر شيء'], correct:1},
+    {lesson:'series', type:'short', q:'علّل: لماذا تنطفئ كل مصابيح الدارة التسلسلية عند احتراق مصباح واحد؟', answer:'لأن التيار له مسار وحيد، وانقطاعه من أي نقطة يوقف مروره في كامل الدارة'},
+    {lesson:'parallel', type:'mcq', q:'في الدارة التفرّعية (التوازي)، الفروع تكون:', options:['متتالية على مسار واحد','مستقلة تنطلق من نفس النقطتين','غير موصولة بالمولد','مفتوحة دائمًا'], correct:1},
+    {lesson:'parallel', type:'tf', q:'في الدارة التفرّعية، احتراق مصباح واحد يُطفئ بقية المصابيح.', correct:false},
+    {lesson:'vv', type:'short', q:'ما فائدة الدارة الكهربائية من نوع ذهاب - إياب؟', answer:'التحكم في مصباح واحد من مكانين مختلفين (كإنارة السلّم)'},
+    {lesson:'vv', type:'mcq', q:'الدارة من نوع ذهاب - إياب تحتاج إلى:', options:['قاطعة واحدة','قاطعتين، لكل واحدة وضعيتان','ثلاث قواطع','مصباحين'], correct:1},
+    {lesson:'short', type:'mcq', q:'تكون الدارة الكهربائية مستقصرة عندما:', options:['ينقطع أحد الأسلاك','يتصل قطبا المولد مباشرة بسلك ناقل','تُغلق القاطعة','يُنزع المصباح'], correct:1},
+    {lesson:'short', type:'tf', q:'الدارة المستقصرة لا تُشكّل أي خطر.', correct:false, note:'تُشكّل خطر حريق وانصهار الأسلاك'},
+    {lesson:'short', type:'short', q:'اذكر نتيجتين لحدوث دارة مستقصرة.', answer:'انطفاء المصابيح، وخطر انصهار الأسلاك/حريق'},
+    {lesson:'safety', type:'mcq', q:'من وسائل الحماية من مخاطر التيار الكهربائي:', options:['أسلاك مكشوفة','منصهرات وقواطع حماية','لمس المقبس بيد مبلّلة','الإفراط في تحميل المقبس'], correct:1},
+    {lesson:'safety', type:'tf', q:'يجب فصل التيار الكهربائي قبل إصلاح أي عطب منزلي.', correct:true},
+  ],
+  matter: [
+    {lesson:'volume', type:'short', q:'اكتب قانون حساب حجم المكعّب.', answer:'V = a³'},
+    {lesson:'volume', type:'mcq', q:'لحساب حجم جسم صلب غير منتظم الشكل نستعمل:', options:['قانونًا رياضيًا مباشرًا','طريقة الإزاحة بمخبار مدرّج','الميزان فقط','المسطرة فقط'], correct:1},
+    {lesson:'volume', type:'short', q:'مخبار مدرّج يحوي 60 mL ماء، بعد غمر جسم صلب فيه أصبح الحجم 78 mL. احسب حجم الجسم.', answer:'18 mL (V = V2 − V1 = 78 − 60)'},
+    {lesson:'volume', type:'tf', q:'وحدة قياس الحجم في الجملة الدولية هي اللتر.', correct:false, note:'الوحدة الدولية هي المتر المكعب m³'},
+    {lesson:'volume', type:'mcq', q:'قانون حجم الكرة هو:', options:['V=a³','V=πr²h','V=4/3×π×r³','V=2πr'], correct:2},
+    {lesson:'states', type:'mcq', q:'الحالة التي يكون فيها شكل المادة وحجمها ثابتين هي:', options:['الصلبة','السائلة','الغازية'], correct:0},
+    {lesson:'states', type:'short', q:'صف حركة حبيبات المادة في الحالة الغازية.', answer:'حركة سريعة وحرة في كل الاتجاهات، والحبيبات متباعدة عن بعضها'},
+    {lesson:'states', type:'tf', q:'الحالة السائلة قابلة للانضغاط بسهولة.', correct:false, note:'الحالة الغازية هي القابلة للانضغاط'},
+    {lesson:'transform', type:'mcq', q:'تحوّل الحالة السائلة إلى الغازية يُسمّى:', options:['الانصهار','التبخّر','التكاثف','التجمّد'], correct:1},
+    {lesson:'transform', type:'short', q:'ماذا يحدث لدرجة حرارة جسم نقي أثناء تغيّر حالته الفيزيائية؟', answer:'تبقى ثابتة طيلة عملية التحوّل'},
+    {lesson:'transform', type:'mcq', q:'التحوّل المباشر من الحالة الصلبة إلى الغازية يُسمّى:', options:['التبخّر','التسامي','الانصهار','التكاثف'], correct:1},
+    {lesson:'transform', type:'short', q:'اذكر مثالًا واقعيًا على ظاهرة التكاثف.', answer:'تشكّل قطرات الماء (الندى) على سطح بارد، أو على زجاج كأس بارد'},
+    {lesson:'mixture', type:'tf', q:'يمكن تمييز مكوّنات الخليط المتجانس بالعين المجرّدة.', correct:false},
+    {lesson:'mixture', type:'mcq', q:'مزيج الماء والزيت يُعتبر خليطًا:', options:['متجانسًا','غير متجانس','محلولًا مركّزًا','نقيًا'], correct:1},
+    {lesson:'mixture', type:'short', q:'عرّف الماء النقي من حيث النموذج الحبيبي.', answer:'جسم يتكوّن من نوع واحد فقط من الحبيبات المتماثلة'},
+    {lesson:'solution', type:'short', q:'أذبنا 45 g من الملح في 1.5 لتر ماء. احسب تركيز المحلول الناتج (g/L).', answer:'30 g/L (45 ÷ 1.5)'},
+    {lesson:'solution', type:'mcq', q:'المحلول الذي لا يستطيع إذابة مادة إضافية يُسمّى:', options:['مخفّفًا','مشبعًا','نقيًا','متجانسًا فقط'], correct:1},
+    {lesson:'solution', type:'tf', q:'كتلة المحلول تساوي دائمًا كتلة المذاب فقط.', correct:false, note:'كتلة المحلول = كتلة المذاب + كتلة المحلّ'},
+  ],
+  light: [
+    {lesson:'sources', type:'mcq', q:'الجسم الذي يصدر الضوء من تلقاء ذاته يُسمّى:', options:['منبعًا مضاءً','منبعًا مضيئًا','جسمًا شفافًا','مرآة'], correct:1},
+    {lesson:'sources', type:'short', q:'اذكر الشرطين الضروريين لرؤية جسم ما.', answer:'أن يكون الجسم مضيئًا أو مضاءً، وأن يصل الضوء الصادر عنه إلى العين دون حاجز'},
+    {lesson:'sources', type:'tf', q:'القمر منبع ضوئي مضيء يصدر الضوء ذاتيًا.', correct:false, note:'القمر منبع مضاء، يعكس ضوء الشمس'},
+    {lesson:'propagation', type:'mcq', q:'ينتشر الضوء في وسط شفاف متجانس وفق:', options:['خطوط منحنية','خطوط مستقيمة','دوائر مغلقة','لا ينتشر'], correct:1},
+    {lesson:'propagation', type:'short', q:'ما سرعة انتشار الضوء في الفراغ؟', answer:'300000 km/s'},
+    {lesson:'propagation', type:'mcq', q:'الحزمة الضوئية التي تلتقي أشعتها في نقطة واحدة تُسمّى:', options:['متوازية','متباعدة','متقاربة'], correct:2},
+    {lesson:'shadow', type:'tf', q:'مع منبع ضوئي نقطي نحصل على منطقتي ظل وظليل معًا.', correct:false, note:'نحصل على منطقة ظل واحدة فقط'},
+    {lesson:'shadow', type:'mcq', q:'منطقة الظليل تنتج عن:', options:['منبع نقطي','منبع ممتد','غياب أي منبع','منبع مضاء فقط'], correct:1},
+    {lesson:'shadow', type:'short', q:'ما الفرق بين منطقة الظل ومنطقة الظليل؟', answer:'الظل: إعتام كلي (لا يصل أي ضوء). الظليل: إعتام جزئي (يصل جزء من الضوء)'},
+    {lesson:'eclipse', type:'mcq', q:'خسوف القمر يحدث عندما:', options:['يدخل القمر منطقة ظل الأرض','يتموضّع القمر بين الأرض والشمس','تدور الأرض حول نفسها فقط','يقترب القمر من الشمس'], correct:0},
+    {lesson:'eclipse', type:'short', q:'اشرح باختصار كيف يحدث كسوف الشمس.', answer:'يتموضّع القمر بين الأرض والشمس على استقامة واحدة، فيحجب ضوء الشمس عن جزء من الأرض'},
+    {lesson:'eclipse', type:'tf', q:'يحدث خسوف القمر وكسوف الشمس دائمًا في نفس الوقت.', correct:false},
+    {lesson:'astronomy', type:'mcq', q:'عدد كواكب المجموعة الشمسية حسب المنهاج هو:', options:['7','8','9','10'], correct:2},
+    {lesson:'astronomy', type:'short', q:'كم من الوقت تستغرق الأرض لإتمام دورة كاملة حول محورها؟', answer:'24 ساعة'},
+    {lesson:'astronomy', type:'mcq', q:'الكوكب الأقرب إلى الشمس هو:', options:['الأرض','الزهرة','عطارد','المريخ'], correct:2},
+    {lesson:'astronomy', type:'short', q:'اذكر سبب حدوث الفصول الأربعة.', answer:'دوران الأرض حول الشمس مع بقاء ميل محورها ثابت الاتجاه طوال السنة'},
+    {lesson:'astronomy', type:'mcq', q:'وجه القمر المضاء بالكامل كما نراه من الأرض يُسمّى:', options:['محاق','هلال','بدر','تربيع'], correct:2},
+    {lesson:'astronomy', type:'tf', q:'يدور القمر حول الأرض في حوالي 29 يومًا.', correct:true},
+  ],
+};
+
+/* ============================================================
+   FILTER UI
+   ============================================================ */
+const state = { domains:new Set(Object.keys(domainsMeta)), lessons:new Set(), types:new Set(['mcq','tf','short']) };
+const typeLabels = {mcq:'اختيار من متعدد', tf:'صح أو خطأ', short:'إجابة قصيرة'};
+
+function buildChip(container, id, text, checked, onToggle){
+  const chip=document.createElement('label');
+  chip.className='check-chip'+(checked?' checked':'');
+  chip.innerHTML=`<input type="checkbox" ${checked?'checked':''}> ${text}`;
+  chip.querySelector('input').onchange=(e)=>{
+    chip.classList.toggle('checked', e.target.checked);
+    onToggle(e.target.checked);
+  };
+  container.appendChild(chip);
+}
+
+function renderDomainFilters(){
+  const box=document.getElementById('domain-filters');
+  box.innerHTML='';
+  Object.keys(domainsMeta).forEach(dk=>{
+    buildChip(box, dk, domainsMeta[dk].label, state.domains.has(dk), (checked)=>{
+      checked ? state.domains.add(dk) : state.domains.delete(dk);
+      renderLessonFilters();
+    });
+  });
+}
+function renderLessonFilters(){
+  const box=document.getElementById('lesson-filters');
+  box.innerHTML='';
+  state.domains.forEach(dk=>{
+    Object.keys(domainsMeta[dk].lessons).forEach(lk=>{
+      const key=dk+':'+lk;
+      const checked = state.lessons.size===0 ? true : state.lessons.has(key);
+      buildChip(box, key, domainsMeta[dk].lessons[lk], checked, (isChecked)=>{
+        if(state.lessons.size===0){
+          // first click: populate full set minus this one if unchecked, or just this one management
+          state.domains.forEach(d2=> Object.keys(domainsMeta[d2].lessons).forEach(l2=> state.lessons.add(d2+':'+l2)));
+        }
+        isChecked ? state.lessons.add(key) : state.lessons.delete(key);
+      });
+    });
+  });
+}
+function renderTypeFilters(){
+  const box=document.getElementById('type-filters');
+  box.innerHTML='';
+  Object.keys(typeLabels).forEach(tk=>{
+    buildChip(box, tk, typeLabels[tk], state.types.has(tk), (checked)=>{
+      checked ? state.types.add(tk) : state.types.delete(tk);
+    });
+  });
+}
+renderDomainFilters(); renderLessonFilters(); renderTypeFilters();
+
+/* ============================================================
+   GENERATION
+   ============================================================ */
+function shuffle(arr){
+  const a=arr.slice();
+  for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+function collectPool(){
+  let pool=[];
+  state.domains.forEach(dk=>{
+    bank[dk].forEach(q=>{
+      const key=dk+':'+q.lesson;
+      const lessonOk = state.lessons.size===0 || state.lessons.has(key);
+      if(lessonOk && state.types.has(q.type)) pool.push(Object.assign({domain:dk}, q));
+    });
+  });
+  return pool;
+}
+function distributePoints(questions){
+  const weight = t => t==='short' ? 2.5 : 1.5;
+  const weights = questions.map(q=>weight(q.type));
+  const totalW = weights.reduce((a,b)=>a+b,0);
+  let points = weights.map(w=> Math.round((w/totalW)*20/0.5)*0.5);
+  let diff = Math.round((20 - points.reduce((a,b)=>a+b,0))/0.5)*0.5;
+  let i=0;
+  while(Math.abs(diff)>=0.5 && questions.length>0){
+    const idx=i%points.length;
+    if(diff>0){ points[idx]+=0.5; diff-=0.5; } else if(points[idx]>0.5){ points[idx]-=0.5; diff+=0.5; }
+    i++;
+    if(i>200) break;
+  }
+  return points;
+}
+let currentExam = null;
+let showAnswers = false;
+
+function generateExam(){
+  const pool = collectPool();
+  const count = Math.min(parseInt(document.getElementById('f-count').value)||8, pool.length);
+  const hint = document.getElementById('gen-hint');
+  if(pool.length===0){ hint.textContent='⚠️ لا توجد أسئلة مطابقة للفلاتر المختارة.'; return; }
+  const chosen = shuffle(pool).slice(0,count);
+  const points = distributePoints(chosen);
+  currentExam = chosen.map((q,i)=>({...q, points:points[i]}));
+  hint.textContent = `تم اختيار ${chosen.length} سؤالًا من أصل ${pool.length} سؤالًا متاحًا.`;
+  renderSheet();
+  document.getElementById('sheet-wrap').classList.add('show');
+}
+
+function renderSheet(){
+  if(!currentExam) return;
+  const school=document.getElementById('f-school').value||'.......................';
+  const teacher=document.getElementById('f-teacher').value||'.......................';
+  const level=document.getElementById('f-level').value||'السنة الأولى متوسط';
+  const duration=document.getElementById('f-duration').value||'ساعة واحدة';
+  const title=document.getElementById('f-title').value||'فرض في مادة العلوم الفيزيائية والتكنولوجيا';
+  const dateVal=document.getElementById('f-date').value;
+  const dateStr = dateVal ? new Date(dateVal).toLocaleDateString('ar-DZ') : '......................';
+
+  let qHtml='';
+  currentExam.forEach((q,i)=>{
+    qHtml += `<div class="qitem"><div class="qhead"><span>${i+1}. ${q.q}</span><span class="pts">(${q.points} ن)</span></div><div class="qbody">`;
+    if(q.type==='mcq'){
+      qHtml += `<ul class="opts">${q.options.map(o=>`<li>${o}</li>`).join('')}</ul>`;
+      if(showAnswers) qHtml += `<div class="answer">✓ الإجابة الصحيحة: ${q.options[q.correct]}</div>`;
+    } else if(q.type==='tf'){
+      qHtml += `<div class="tf-line">صحيح ⭘ &nbsp;&nbsp;&nbsp; خطأ ⭘</div>`;
+      if(showAnswers) qHtml += `<div class="answer">✓ الإجابة: ${q.correct?'صحيح':'خطأ'}${q.note?' — '+q.note:''}</div>`;
+    } else if(q.type==='short'){
+      qHtml += `<div class="short-line"></div><div class="short-line"></div>`;
+      if(showAnswers) qHtml += `<div class="answer">✓ عناصر الإجابة: ${q.answer}</div>`;
+    }
+    qHtml += `</div></div>`;
+  });
+
+  const bareme = `<div class="bareme"><table><tr>${currentExam.map((q,i)=>`<th>س${i+1}</th>`).join('')}<th>المجموع</th></tr><tr>${currentExam.map(q=>`<td>${q.points}</td>`).join('')}<td>${currentExam.reduce((a,q)=>a+q.points,0)}/20</td></tr></table></div>`;
+
+  document.getElementById('sheet').innerHTML = `
+    <div class="sheet-head">
+      <div class="rep">الجمهورية الجزائرية الديمقراطية الشعبية</div>
+      <div>وزارة التربية الوطنية</div>
+    </div>
+    <div class="sheet-meta">
+      <div>المؤسسة: ${school}<br>الأستاذ(ة): ${teacher}</div>
+      <div>القسم: ${level}<br>المدة: ${duration} &nbsp;|&nbsp; التاريخ: ${dateStr}</div>
+    </div>
+    <div class="sheet-title">${title}</div>
+    <div class="sheet-sub">${showAnswers ? '🔑 نسخة الأستاذ (مع الإجابات)' : 'ورقة إجابة التلميذ(ة)'}</div>
+    <div class="student-line"><span>الاسم واللقب: .......................................</span><span>العلامة: ...... / 20</span></div>
+    <hr class="divider">
+    ${qHtml}
+    <hr class="divider">
+    <div style="font-weight:700;font-size:13px;margin-bottom:6px;">بارم التنقيط</div>
+    ${bareme}
+  `;
+}
+
+document.getElementById('btn-generate').onclick = generateExam;
+document.getElementById('btn-toggle-answers').onclick = ()=>{
+  showAnswers = !showAnswers;
+  document.getElementById('btn-toggle-answers').textContent = showAnswers ? '👤 إظهار نسخة التلميذ' : '🔑 إظهار نسخة الإجابات';
+  renderSheet();
+};
+document.getElementById('btn-print').onclick = ()=> window.print();
+
+['f-school','f-teacher','f-level','f-duration','f-title','f-date'].forEach(id=>{
+  document.getElementById(id).addEventListener('input', ()=>{ if(currentExam) renderSheet(); });
+});
+
+generateExam();
+
+if('serviceWorker' in navigator){
+  window.addEventListener('load', ()=>{ navigator.serviceWorker.register('sw.js').catch(()=>{}); });
+}
+</script>
+</body>
+</html>
